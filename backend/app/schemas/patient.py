@@ -7,10 +7,10 @@ class PatientBase(BaseModel):
     gender: str
     phone: Optional[str] = None
     
-class PatienceCreate(PatientBase):
+class PatientCreate(PatientBase):
     pass
 
-class patienceResponse(PatientBase):
+class patientResponse(PatientBase):
     id: int
     
     class Config:
