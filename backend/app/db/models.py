@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -54,7 +54,9 @@ class Doctor(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     specialization = Column(String, nullable=False)
-    phone = Column(String, nullable=True)
+    phone = Column(String, nullable=False)
+    email = Column(String, nullable=True)
+    is_available = Column(Boolean, default=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
 

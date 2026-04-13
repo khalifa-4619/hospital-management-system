@@ -5,7 +5,8 @@ from typing import Optional
 class DoctorBase(BaseModel):
     name: str
     specialization: str
-    phone: Optional[str] = None
+    phone: str
+    email: Optional[str] = None
 
 
 class DoctorCreate(DoctorBase):
