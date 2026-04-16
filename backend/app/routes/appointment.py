@@ -29,6 +29,14 @@ def create_appointment(appointment: AppointmentCreate, db: Session = Depends(get
     if not doctor:
         raise HTTPException(status_code=404, detail="Doctor not found")
 
+    #Double-booking check
+    existing_appointment = db.query(models.Appointment).filter(
+        models.Appointment.doctor_id == appointment.doctor_id,
+        models.Appointment.appointment_time == appointment.appointment_time
+    ).first()
+    if existing_appointment:
+        raise HTTPException(status_code=400, detail="Doctor is already booked for this time slot")
+
     new_appointment = models.Appointment(
         patient_id=appointment.patient_id,
         doctor_id=appointment.doctor_id,
