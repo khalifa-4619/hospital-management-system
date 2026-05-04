@@ -14,7 +14,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, nullable=False, index=True)
     password = Column(String, nullable=False)
-    role = Column(String, nullable=False)  # admin, doctor, receptionist
+    role = Column(String, nullable=False)  # admin, doctor, patient
 
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -88,3 +88,36 @@ class Appointment(Base):
 
     def __repr__(self):
         return f"<Appointment Patient={self.patient_id} Doctor={self.doctor_id}>"
+    
+    
+    # =========================
+# MEDICAL RECORD MODEL
+# =========================
+class MedicalRecord(Base):
+    __tablename__ = "medical_records"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False)  # who created it
+    diagnosis = Column(String, nullable=False)
+    prescription = Column(String, nullable=True)
+    notes = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    patient = relationship("Patient")
+    doctor = relationship("Doctor")
+
+# =========================
+# BILLING MODEL
+# =========================
+class Billing(Base):
+    __tablename__ = "billings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
+    amount = Column(Integer, nullable=False)
+    status = Column(String, default="unpaid")  # unpaid, paid
+    description = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    patient = relationship("Patient")
